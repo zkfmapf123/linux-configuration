@@ -94,6 +94,7 @@
 
 > Linux Process 우선순위
 
+- process.sh
 - 우선순위가 높다는 것은 => CPU 사용시간이 많다 (-20 ~ +19)
 - CPU 성능 상 굳이 우선순위를 변경하지 않음 (대부분 기본값을 사용)
 - CPU 스케쥴링이 알아서 관리
@@ -103,3 +104,38 @@
     ## 우선순위
     ps ax -o pid,ni,cmd
   ```
+
+> proc
+
+- 보통 프로세스나, CPU, MEM 정보는 Kernel단에 정보임
+- Usermode 단에서 해당 자원들을 읽을 수 있게하는 Directory
+  ```
+      cd /proc
+      cat cpuinfo
+  ```
+
+## Linux CronJob + logrotated
+
+- n시 마다 보안관련도구 실행
+- 백업 및 미러링
+- 배치 작업 수행
+- 시스템정보를 메일로 전송(주기적) \*\*\* => 추후 진행해보자
+- 로그데이터 관리
+- 일정기간동안의 로그데이터는 압축 -> 그 후에는 삭제 \*\*\* => 추후 진행해보자
+
+> cron
+
+- cron 작업은 systemd로 관리 -> 계속 실행이 됨
+
+```
+    crontab -e // crontab 항목 편집
+    crontab -l // crontab 리스트 출력
+    crontab -r // crontab 삭제
+
+    crontab -e
+    * * * * * echo "hello world" >> /tmp/hello_world
+    tail -f /tmp/hello_world
+```
+
+- <a href="https://crontab.guru/"> Cron Maker </a>
+- <a href="https://stackoverflow.com/questions/5952467/how-to-specify-a-editor-to-open-crontab-file-export-editor-vi-does-not-work"> Crontab use vi editor </a>
