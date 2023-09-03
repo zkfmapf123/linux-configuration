@@ -139,3 +139,79 @@
 
 - <a href="https://crontab.guru/"> Cron Maker </a>
 - <a href="https://stackoverflow.com/questions/5952467/how-to-specify-a-editor-to-open-crontab-file-export-editor-vi-does-not-work"> Crontab use vi editor </a>
+
+## FileSystem
+
+> Disk 기반 파일 시스템
+
+- Linux
+  - EXT3, EXT4, ZFS, BTRFS
+- Windows
+  - FAT, NTFS
+- MacOS
+  - HFS, APFS
+
+> Network File System
+
+- 네트워크로 연결된 다른 컴퓨터의 파일시스템을 마운트로해서 사용 (EBS)
+- NFS, SMB, CIFS
+- EBS, EFS, ...
+
+> 특수파일 시스템 (가상파일 시스템)
+
+- 실제 디스크 공간을 관리하지 않음
+- proc, sysfs, tmpfs, cgroup => 특수목적
+
+> File Mount
+
+- mount.example.sh
+- 마운트 시에는 /etc/fstab에 파일 명세를 진행해야 함
+  ```
+      cat /etc/fstab
+  ```
+
+> Directory
+
+```
+    /                   => 기본계층
+    /bin                => 명령어 바이너리 (all command)
+    /sbin               => 필수 시스템 바이너리 (init, ip, mount)
+    /usr/bin            => 대부분의 명령과 실행 파일
+
+    /opt                => 선택 가능한 응용 소프트웨어 패키지
+    /usr/local          => 로컬 소프트웨어나 환경설정 데이터
+    /etc                => 시스템에 필수적인 싲가 및 설정파일
+    /run                => 실행주인 프로그램을 위한 pid, socket을 위한 디렉토리
+    /var/log            => 시스템 로그 파일
+
+    /home               => 사용자 홈 디렉토리
+    /tmp                => 재부팅 시 삭제되는 임시파일
+```
+
+> Command
+
+- du.example.sh
+
+```
+    df      => 남은 용량
+    df -h   => 읽기 편한 양식
+    df .    => 현재 디렉토리 기준
+
+    du      => 현재 디렉토리에서 하위 디렉토리까지 사용량
+    du -a   => 모두 확인
+    du -s   => 지정한 디렉토리 내에 존재하는 파일의 sum
+    du -h   => 결과내용을 가독성있게 표시
+    du -d 1 => 1 depth 디렉토리까지 용량 확인
+
+    du -sh /home/ubuntu
+    du -h -d 1 /home/ubuntu
+    du -h -d 1 /home/ubuntu | sort -h -r
+
+    ## ****
+    du -h -d 1 / 2> /dev/null | sort -h -r | head -n 20
+
+    du -h -d => 디스크사용량을 읽기 편하게 보되
+    1 / 2> /dev/null => 1 depth 까지보고 / 위치에서 2> /dev/null 에러무시
+
+    du -h -d 2 /var 2> /dev/null | sort -h -r | head -n 20
+```
