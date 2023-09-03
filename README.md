@@ -63,3 +63,43 @@
         Requires=docker.socket containerd.service // 강제로 함께 실행이 필요함
         ...
     ```
+
+> Example
+
+```sh
+    cd /etc/systemd/system/uptime-logger.service
+
+    cd /usr/local/bin/uptime-logger
+
+    sudo systemctl enable uptime-logger.service
+    sudo systemctl start uptime-logger.service
+    sudo systemctl status uptime-logger.service
+
+    tail -f /tmp/uptime.log
+```
+
+## Linux Process 관리
+
+> Linux Process
+
+- Linux에서는 프로세스를 새로 만들지 않음
+- 기존 프로세스를 복제 및 프로그램을 교체하는 방식으로 운용
+
+  1. 기존 프로세스는 새로운 프로세스를 생성하고 -> 자신을 복제
+  2. 복제된 프로세스는 현재 실행중인 프로그램을 교체
+
+  ```sh
+      pstree -p
+  ```
+
+> Linux Process 우선순위
+
+- 우선순위가 높다는 것은 => CPU 사용시간이 많다 (-20 ~ +19)
+- CPU 성능 상 굳이 우선순위를 변경하지 않음 (대부분 기본값을 사용)
+- CPU 스케쥴링이 알아서 관리
+
+  ```sh
+
+    ## 우선순위
+    ps ax -o pid,ni,cmd
+  ```
