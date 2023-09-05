@@ -102,7 +102,7 @@ resource "aws_security_group" "linux-sg" {
 }
 
 module "linux" {
-source = "terraform-aws-modules/ec2-instance/aws"
+  source = "terraform-aws-modules/ec2-instance/aws"
 
   name = "linux-instance"
 
@@ -117,7 +117,7 @@ source = "terraform-aws-modules/ec2-instance/aws"
 
   ebs_block_device = [{
     device_name           = "/dev/sda1"
-    volume_size           = "50"
+    volume_size           = "10"
     delete_on_termination = true
   }]
 
@@ -127,6 +127,30 @@ source = "terraform-aws-modules/ec2-instance/aws"
   }
 }
 
-output public_ip {
-    value = module.linux.public_ip
+#################################### 
+### 여분의 EBS 볼륨 
+####################################
+resource "aws_ebs_volume" "ebs" {
+  availability_zone = "ap-northeast-2a"
+  size              = 20
+
+  tags = {
+    Name = "ebs-etc"
+    Resource = "ebs"
+  }
+}
+
+resource "aws_volume_attachment" "ebs_attr" {
+  device_name = "/dev/sdh"
+  volume_id = aws_ebs_volume.ebs.id
+  instance_id = module.linux.id
+}
+
+
+output "instance_id" {
+  value = module.linux.id
+}
+
+output "public_ip" {
+  value = module.linux.public_ip
 }

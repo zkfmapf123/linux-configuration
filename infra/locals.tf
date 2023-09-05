@@ -13,5 +13,5 @@ locals {
   }
 
   public_ip = "218.39.50.99/32"
-  ami = "ami-013fd5ed8b84ab49e"
+  ami       = "ami-04a7c24c015ef1e4c"
 }

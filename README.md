@@ -215,3 +215,35 @@
 
     du -h -d 2 /var 2> /dev/null | sort -h -r | head -n 20
 ```
+
+> 기존시스템에 새로운 디스크 추가하기 \*\*\*
+
+```sh
+    lsblk               ## 현재 파일시스템 보기
+
+    df -h
+    sudo file -s /dev/nvme0n1p1 ## 현재 마운트된 파일시스템 보기
+
+    sudo mkfs -t ext4 /dev/nvme2n1 ## 새로운 파일시스템 만들기
+    sudo mkdir /data               ## /dev/nvme2n1이랑 mapping할 폴더
+
+    sudo mount /dev/nvme2n1 /data
+    df -h
+    ## /dev/nvme2n1     20G   24K   19G   1% /data 이렇게 마운트가 됨
+    mount | grep data
+
+    ## 파일시스템 테이블에 등록해서 재부팅해도 Default로 동작하게 하기
+    sudo cp /etc/fstab /etc/fstab.orig
+    sudo vi /etc/fstab
+
+    sudo blkid                      ## mount된 uuid 리스트 => 여기서 새롭게 마운트된 놈 copy
+
+    sudo vi /etc/fstab
+    UUID=4870ba44-116b-4b5f-b59a-12bad1cba74c /data ext4 defaults,discard,nofail 0 2
+
+    ## test
+    sudo umount /data
+    sudo mount -a               ## 이전 마운트 내역 복구
+```
+
+- <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ebs-using-volumes.html"> Mount </a>
