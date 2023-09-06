@@ -247,3 +247,89 @@
 ```
 
 - <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ebs-using-volumes.html"> Mount </a>
+
+## User Management
+
+```sh
+    cat /etc/passwd
+
+    ## [로그인명]:[암호화된 암호]:[UID]:[GroupID]:[사용자정보]:[홈 디렉토리]:[로그인 쉘]
+    ## rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin
+    ## tcpdump:x:72:72::/:/sbin/nologin
+    ## ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash
+
+    ## 비밀번호 관리
+    cat /etc/shadow
+
+    ## 그룹 관리
+    cat /etc/group
+
+    ## 사용자 생성
+    sudo useradd john
+    sudo useradd -m -s /bin/bash jane
+    sudo userdel jane -r # -r 홈디렉토리 삭제여부
+
+    ## steve 유저 추가 및 root 그룹 추가
+    sudo useradd -m -s /bin/dash steve  ## 사용자 추가
+    sudo passwd steve                   ## passwd 설정
+
+    cat /etc/passwd                     ## 사용자 확인
+    cat /etc/group                      ## 사용자의 대한 그룹 확인
+
+    sudo usermod -G root steve          ## root 사용자 추가 => cat /etc/group
+
+    cat /etc/group                      ## 사용자의 대한 그룹 확인
+    sudo userdel -r steve
+```
+
+> service 유저 만들기
+
+```sh
+    ## -r system user
+    ## -s shell
+    sudo useradd -r -s /usr/sbin/nologin jenkins
+    grep jenkins /etc/passwd /etc/shadow
+    userdel jenkins -r
+```
+
+> 앱 구동용 서비스 유저 만들기
+
+- ./user-docker
+
+> 최강의 Bastion host만들기 (ssh + Google Authenticator)
+
+```sh
+    cd /best-bastion-host
+    terraform init && terraform apply
+    sh scp.sh
+
+    ## in instance use ssh
+    sh mfa.sh
+
+    ## Backup
+    sudo cp /etc/pam.d/sshd /etc/pam.d/sshd.bak
+
+    ## sshd 설정 변경
+    sudo vi /etc/pam.d/sshd
+
+    # Standard Un*x authentication.
+    # @include common-auth                           => 주석 처리
+    @include common-password                       # => Add
+    auth required pam_google_authenticator.so      # => Add
+    auth required pam_permit.so                    # => Add
+
+    ## 백업
+    sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+
+    ## sshd 설정변경
+    sudo vi /etc/ssh/sshd_config
+
+    # To disable tunneled clear text passwords, change to no here!
+    PasswordAuthentication no
+    #PermitEmptyPasswords no
+    ChallengeResponseAuthentication yes                                     # => Add
+    AuthenticationMethods publickey,password publickey,keyboard-interactive # => Add
+
+    ## 재시작
+    sudo systemctl restart sshd.service
+```
