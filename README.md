@@ -333,3 +333,5 @@
     ## 재시작
     sudo systemctl restart sshd.service
 ```
+
+## Log Management
