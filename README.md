@@ -14,6 +14,10 @@
 
 - [Process](./process/)
 
+## Disk
+
+- [Disk](./disk/)
+
 ## 최강의 Bastion host만들기 (ssh + Google Authenticator)
 
 ```sh

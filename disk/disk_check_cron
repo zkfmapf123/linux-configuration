@@ -1,0 +1,19 @@
+#!/bin/sh
+
+## /usr/local/bin/disk_check_script
+IP=$(hostname -I);
+LIMIT=10;
+
+## slack config (수정해야 함)
+slack_webhook_url="https://hooks.slack.com/services/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";
+channel="jenkins-slack-notification"
+
+root_disk_used=$(df / | grep ^/ | awk '{print $5}'); ## 22%
+root_disk_used=${root_disk_used::-1}; ## % 짜르기
+
+if [ "$LIMIT" -lt "$root_disk_used" ]; then
+    curl -X POST \
+    --data-urlencode "payload={\"$channel\": \"#jenkins-slack\", \"username\": \"disk_use_alert\", \"text\": \"Usage of disk is in danger. IP: $IP ROOT_DISK_USAGE: $root_disk_used % <https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances:search=$IP |Click here to go AWS EC2 Instance > \", \"icon_emoji\": \":sunrise:\"}" $slack_webhook_url;
+    exit
+fi
+
