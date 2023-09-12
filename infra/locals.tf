@@ -12,6 +12,10 @@ locals {
     "${local.region}${k}" => v
   }
 
-  public_ip = "218.39.50.99/32"
-  ami       = "ami-04a7c24c015ef1e4c"
+  public_ip = "0.0.0.0/32"
+  
+  // Architecture => ARM(64)
+  ec2_machine = {
+    "t4g.small" : "ami-0e3a9423b7b281ba8"
+  }
 }

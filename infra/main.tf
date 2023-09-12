@@ -102,12 +102,13 @@ resource "aws_security_group" "linux-sg" {
 }
 
 module "linux" {
+  for_each = local.ec2_machine
   source = "terraform-aws-modules/ec2-instance/aws"
 
   name = "linux-instance"
 
-  ami                         = local.ami
-  instance_type               = "t3.micro"
+  ami                         = each.value
+  instance_type               = each.key
   key_name                    = aws_key_pair.key_pair.key_name
   availability_zone           = keys(aws_subnet.public_subnets)[0]
   subnet_id                   = values(aws_subnet.public_subnets)[0].id
@@ -130,27 +131,26 @@ module "linux" {
 #################################### 
 ### 여분의 EBS 볼륨 
 ####################################
-resource "aws_ebs_volume" "ebs" {
-  availability_zone = "ap-northeast-2a"
-  size              = 20
+# resource "aws_ebs_volume" "ebs" {
+#   availability_zone = "ap-northeast-2a"
+#   size              = 20
 
-  tags = {
-    Name = "ebs-etc"
-    Resource = "ebs"
-  }
-}
+#   tags = {
+#     Name = "ebs-etc"
+#     Resource = "ebs"
+#   }
+# }
 
-resource "aws_volume_attachment" "ebs_attr" {
-  device_name = "/dev/sdh"
-  volume_id = aws_ebs_volume.ebs.id
-  instance_id = module.linux.id
-}
+# resource "aws_volume_attachment" "ebs_attr" {
+#   device_name = "/dev/sdh"
+#   volume_id = aws_ebs_volume.ebs.id
+#   instance_id = module.linux.id
+# }
 
+# output "instance_id" {
+#   value = module.linux.id
+# }
 
-output "instance_id" {
-  value = module.linux.id
-}
-
-output "public_ip" {
-  value = module.linux.public_ip
-}
+# output "public_ip" {
+#   value = module.linux.public_ip
+# }
