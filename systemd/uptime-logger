@@ -1,0 +1,8 @@
+#!/bin/sh
+
+## /usr/local/bin/uptime-logger
+while :
+do
+    echo $(/bin/date) - $(/usr/bin/uptime) >> /tmp/uptime.log
+    sleep 10
+done

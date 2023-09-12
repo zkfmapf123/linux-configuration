@@ -12,7 +12,7 @@ locals {
     "${local.region}${k}" => v
   }
 
-  public_ip = "0.0.0.0/32"
+  public_ip = "0.0.0.0/0"
   
   // Architecture => ARM(64)
   ec2_machine = {
