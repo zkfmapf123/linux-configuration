@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# /etc/logrotate.d/nginx
+
+## /var/log/nginx/*.log에 모든 파일을 로깅
+## daily + rotate 14 => 14일치 로그저장
+/var/log/nginx/*.log {
+    create 0640 nginx root
+    daily
+    rotate 14
+    compress
+    missingok
+    notifempty
+    delaycompress
+    sharedscripts
+
+    ## 계속발생
+    prerotate
+        if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+                run-parts /etc/logrotate.d/httpd-prerotate; \
+        fi \
+    endscript
+
+    ## sudo service nginx rotate 기능을 수행
+    postrotate
+        /bin/kill -USR1 `cat /run/nginx.pid 2>/dev/null` 2>/dev/null || true
+    endscript
+}

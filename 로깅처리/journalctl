@@ -1,0 +1,9 @@
+#!/bin/sh
+
+## journalctl 시작
+
+journalctl 
+
+## journalctl config 설정
+
+sudo vi /etc/systemd/journald.conf
