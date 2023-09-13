@@ -9,6 +9,9 @@
 ## Exec
 
 ```sh
+    ## 서비스 파일
+    ## /etc/systemd/system/~.service
+
     ## 서비스 목록 리로드
     sudo systemctl daemon-reload
 
