@@ -12,11 +12,11 @@
 
 ## Process
 
-- [Process](./process/)
+- [Process](./%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%EA%B4%80%EB%A6%AC/)
 
 ## Disk
 
-- [Disk](./disk/)
+- [Disk](./%EB%94%94%EC%8A%A4%ED%81%AC%EA%B4%80%EB%A6%AC/)
 
 ## 최강의 Bastion host만들기 (ssh + Google Authenticator)
 
@@ -57,3 +57,13 @@
 ```
 
 ## Log Management
+
+- [로깅처리](./%EB%A1%9C%EA%B9%85%EC%B2%98%EB%A6%AC/)
+
+## 리눅스 네트워크
+
+## Todo
+
+- [ ] Jenkins System 으로 등록해서 사용하기
+- [ ] 로그 대량으로 발생해서 logrotate로 관리
+- [ ] 에러 로그는 슬랙알람으로 발생하게 처리하기
