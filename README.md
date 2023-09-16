@@ -62,6 +62,8 @@
 
 ## 리눅스 네트워크
 
+- [네트워크](./%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/)
+
 ## Todo
 
 - [ ] Jenkins System 으로 등록해서 사용하기
