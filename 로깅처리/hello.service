@@ -1,0 +1,14 @@
+[Unit]
+Description=HelloWorld
+After=network.target
+
+[Service]
+WorkingDirectory=/home/ec2-user/systemd_demo
+ExecStart=/usr/local/bin/gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+Restart=on-failure
+RestartSec=5s
+SyslogIdentifier=gunicorn
+SyslogFacility=local7
+
+[Install]
+WantedBy=multi-user.target

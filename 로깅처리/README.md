@@ -89,6 +89,67 @@
 - ELK 스택 => 요청이 많을 경우 Buffer Layer (RabbitMQ, AWS SQS, Kafka) 구성이 필요
 - 서비스형 => Datadog, CloudWatch Logs(비쌈...)
 
+## 대규모 로그 관리 실습 use python + fastapi
+
+![logging](./logging.png)
+
+```sh
+
+    ## install python3
+    sudo amazon-linux-extras install epel
+    sudo yum install python3-pip
+    python -v
+
+    ## install python package
+    sudo pip3 install "uvicorn[standard]" gunicorn fastapi
+
+    ## main.py, hello.service 이동
+    sh scp_main
+
+    ## main.py => /systemd_demo/main.py
+    ## hello.service => /etc/systemd/system/hello.service
+
+    ## hello.service 서비스 등록
+    sudo systemctl daemon-realod
+    sudo systemctl enable hello.service
+    sudo systemctl status hello.service
+    sudo systemctl start hello.service
+
+    ## Test
+    curl -i localhost:8000
+    sudo journalctl -u hello.service -f
+
+    ## rsyslog 설정
+    ## https://itragdoll.tistory.com/54
+    sudo vi /etc/rsyslog.d/30-hello.conf
+    # echo<<EOF > /etc/rsyslog.d/30-hello.conf
+    # local7.*             /var/log/hello.log
+    # >>
+    # EOF
+
+    ## hello.service 재시작
+    sudo systemctl restart hello.service
+
+    ## logrotate.d 설정
+    ## vi/etc/logrotate.d/hello
+    /var/log/hello.log {
+        daily
+        rotate 14
+        missingok
+        notifempty
+        copytruncate
+        compress
+        delaycompress
+    }
+```
+
+## 결론
+
+- 결국에 앱 자체를 서비스로 등록을 하는 경우에는 BackendGround로 동작하게 할 수 있다.
+- Service로 구동된 앱의 경우 journalctl로 검색가능하다
+- Service로 구동된 앱의 경우, rsyslog를 사용하여 /var/log/\* 에 내보낼 수 있다.
+- /var/log/\* 에서 로그가 쌓이는 경우 /etc/logrotate.d를 사용하여 로그 규칙을 정할 수 있다.
+
 ## Reference
 
 - <a href="https://server-talk.tistory.com/459"> journalctl 명령어 </a>

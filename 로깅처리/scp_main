@@ -1,0 +1,17 @@
+#!/bin/bash
+
+## EC2 tag name
+TAG_NAME="linux-container"
+
+## Find External IP
+external_ip=$(aws ec2 describe-instances --filters \
+    "Name=tag:Name,Values=${TAG_NAME}" \
+    "Name=instance-state-name,Values=running" \
+    --output text --query 'Reservations[].Instances[].PublicIpAddress')
+
+## scp main.py
+echo "external ip >> " $external_ip
+scp -i ~/.ssh/id_rsa ./main.py ec2-user@$external_ip:~/
+
+## scp hello.service
+scp -i ~/.ssh/id_rsa ./hello.service ec2-user@$external_ip:~/
