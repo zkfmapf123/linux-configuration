@@ -84,6 +84,14 @@
 
     ![attach_2](./public/attach_2.png)
 
+    ```
+      lsblk
+      df -hT
+      sudo growpart /dev/xvda 1
+
+      ## /dev/xvda에 있는 1번 디스크에 병합
+    ```
+
   - 파일시스템 검색해서 파일시스템 확장하기 (ext4)
 
     ```
