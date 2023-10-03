@@ -89,6 +89,8 @@
       df -hT
       sudo growpart /dev/xvda 1
 
+      sudo xfs_grofs -d /
+
       ## /dev/xvda에 있는 1번 디스크에 병합
     ```
 
