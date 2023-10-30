@@ -82,14 +82,14 @@
 
   - 파일시스템 검색해서 파일시스템 확장하기 (xfs)
 
-    ![attach_2](./public/attach_2.png)
-
     ```
       lsblk
       df -hT
+
+      ## block Device 이름
       sudo growpart /dev/xvda 1
 
-      sudo xfs_grofs -d /
+      sudo xfs_growfs -d /
 
       ## /dev/xvda에 있는 1번 디스크에 병합
     ```
