@@ -64,6 +64,14 @@
 
 - [네트워크](./%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/)
 
+## 파이프*필터*리디렉션
+
+- [파이프*필터*리디렉션](./파이프_필터_리디렉션/README.md)
+
+## Shell Programming
+
+- [Shell Programming](./shell-programming/)
+
 ## Todo
 
 - [ ] Jenkins System 으로 등록해서 사용하기
